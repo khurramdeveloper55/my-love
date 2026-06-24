@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Everything • For You</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&display=swap");
+
+      :root {
+        --rose: #ff8fab;
+        --blush: #ffccd5;
+        --gold: #f4c095;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Playfair Display", serif;
+        color: #fff;
+        overflow-x: hidden;
+        background: linear-gradient(
+          135deg,
+          #2a1b3d 0%,
+          #4a2542 50%,
+          #6b2d4f 100%
+        );
+        position: relative;
+        min-height: 100vh;
+      }
+
+      .hearts {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .heart {
+        position: absolute;
+        font-size: 30px;
+        color: #ff8fab;
+        opacity: 0.7;
+        animation: floatHeart linear infinite;
+        text-shadow: 0 0 15px rgba(255, 143, 171, 0.9);
+      }
+
+      @keyframes floatHeart {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+        }
+      }
+
+      .container {
+        position: relative;
+        z-index: 10;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .header h1 {
+        font-family: "Dancing Script", cursive;
+        font-size: 4.5rem;
+        color: var(--gold);
+        text-shadow: 0 0 30px rgba(244, 192, 149, 0.7);
+        animation: glow 3s ease-in-out infinite alternate;
+      }
+
+      .header p {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        letter-spacing: 3px;
+        margin-top: 10px;
+      }
+
+      .message {
+        max-width: 720px;
+        margin: 30px auto;
+        font-size: 1.55rem;
+        line-height: 1.7;
+        padding: 40px 50px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 30px;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 143, 171, 0.3);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      }
+
+      .btn {
+        margin: 18px 12px;
+        padding: 18px 50px;
+        font-size: 1.3rem;
+        font-family: "Playfair Display", serif;
+        color: white;
+        background: linear-gradient(45deg, #ff4d94, #ff8fab);
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.4s;
+        box-shadow: 0 10px 30px rgba(255, 77, 148, 0.5);
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .btn:hover {
+        transform: scale(1.08) translateY(-5px);
+        box-shadow: 0 20px 40px rgba(255, 77, 148, 0.7);
+      }
+
+      /* Modal Improvements */
+      .confession-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(42, 27, 61, 0.97);
+        z-index: 200;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        overflow-y: auto;
+      }
+
+      .confession-content {
+        max-width: 680px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px 35px;
+        border-radius: 35px;
+        border: 2px solid var(--rose);
+        box-shadow: 0 0 60px rgba(255, 143, 171, 0.6);
+        text-align: left;
+        animation: fadeInScale 0.6s ease;
+        max-height: 92vh;
+        overflow-y: auto;
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.75);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .confession-content h2 {
+        font-family: "Dancing Script", cursive;
+        font-size: 2.8rem;
+        color: var(--gold);
+        text-align: center;
+        margin-bottom: 25px;
+        text-shadow: 0 0 20px rgba(244, 192, 149, 0.8);
+      }
+
+      .confession-content p {
+        font-size: 1.4rem;
+        line-height: 1.75;
+        margin-bottom: 20px;
+        color: #ffe6ee;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 2.8rem;
+        color: #ff8fab;
+        cursor: pointer;
+        z-index: 300;
+        transition: transform 0.3s;
+      }
+
+      .close-btn:hover {
+        transform: rotate(90deg);
+      }
+
+      footer {
+        position: absolute;
+        bottom: 25px;
+        opacity: 0.75;
+        font-size: 1rem;
+        text-align: center;
+        width: 100%;
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 3.6rem;
+        }
+        .header p {
+          font-size: 1.2rem;
+        }
+        .message {
+          padding: 30px 25px;
+          font-size: 1.4rem;
+        }
+        .btn {
+          padding: 16px 40px;
+          font-size: 1.2rem;
+          margin: 12px 8px;
+        }
+        .confession-content {
+          padding: 35px 25px;
+        }
+        .confession-content h2 {
+          font-size: 2.4rem;
+        }
+        .confession-content p {
+          font-size: 1.3rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header h1 {
+          font-size: 3.2rem;
+        }
+        .confession-content {
+          padding: 30px 20px;
+          max-height: 90vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hearts" id="hearts"></div>
+
+    <div class="container">
+      <div class="header">
+        <h1>To My Forever</h1>
+        <p>My Love • My Crush • My Everything</p>
+      </div>
+
+      <div class="message">
+        <p>My dearest,</p>
+        <p>You are the most beautiful dream I never want to wake up from...</p>
+      </div>
+
+      <button class="btn" onclick="showConfession()">
+        Read My Heart's Confession 💌
+      </button>
+      <button class="btn" onclick="sayYes()">Yes, I Want You Forever ❤️</button>
+
+      <footer>Made with all the love in my heart for you</footer>
+    </div>
+
+    <!-- Confession Modal -->
+    <div class="confession-modal" id="confessionModal">
+      <span class="close-btn" onclick="closeConfession()">×</span>
+      <div class="confession-content">
+        <h2>My True Confession</h2>
+        <p>
+          Every time I see you, my heart forgets how to beat normally. It
+          stutters, races, and whispers your name.
+        </p>
+        <p>
+          You are not just my cousin — you are the girl who turned my world into
+          poetry. Your smile makes the stars jealous. Your laugh is my favorite
+          melody. Your eyes hold galaxies I want to get lost in forever.
+        </p>
+        <p>
+          I’ve fallen for your kindness, your grace, your little habits, the way
+          you light up every room without even trying. I love you in a way that
+          feels both gentle and fierce — a love so deep it scares me and
+          comforts me at the same time.
+        </p>
+        <p>
+          <strong>You make me blush just by existing.</strong> And yet I want to
+          tell the whole universe that you are the one who owns every beat of
+          this heart.
+        </p>
+        <p
+          style="
+            text-align: center;
+            font-size: 2rem;
+            margin-top: 30px;
+            color: var(--gold);
+          "
+        >
+          You are my crush,<br />
+          my secret joy,<br />
+          my home,<br />
+          <span style="font-size: 2.6rem">my everything.</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Final Celebration -->
+    <div
+      class="confession-modal"
+      id="finalScreen"
+      style="background: rgba(0, 0, 0, 0.96)"
+    >
+      <div class="confession-content" style="text-align: center">
+        <h2 style="font-size: 3.8rem">She Said Yes! 💍</h2>
+        <p style="font-size: 1.8rem; color: #ffccd5">
+          I promise to love you endlessly, make you smile every day, and cherish
+          you as my greatest blessing.
+        </p>
+        <div style="font-size: 6rem; margin: 30px 0">💕</div>
+      </div>
+    </div>
+
+    <canvas id="confetti"></canvas>
+
+    <script>
+      // Floating Hearts
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = ["❤️", "💖", "💗", "💘", "💝"][
+          Math.floor(Math.random() * 5)
+        ];
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 7 + 9 + "s";
+        heart.style.fontSize = Math.random() * 28 + 22 + "px";
+        document.getElementById("hearts").appendChild(heart);
+        setTimeout(() => heart.remove(), 18000);
+      }
+      setInterval(createHeart, 280);
+
+      function showConfession() {
+        document.getElementById("confessionModal").style.display = "flex";
+        createHeart();
+        createHeart();
+        createHeart();
+      }
+
+      function closeConfession() {
+        document.getElementById("confessionModal").style.display = "none";
+      }
+
+      function sayYes() {
+        document.getElementById("finalScreen").style.display = "flex";
+        launchConfetti();
+      }
+
+      // Confetti
+      function launchConfetti() {
+        const canvas = document.getElementById("confetti");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const colors = ["#ff8fab", "#ffccd5", "#f4c095", "#ff4d94", "#c79cff"];
+        const pieces = [];
+
+        class Piece {
+          constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height - canvas.height;
+            this.size = Math.random() * 14 + 8;
+            this.speed = Math.random() * 7 + 5;
+            this.angle = Math.random() * 360;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.rotationSpeed = Math.random() * 0.15 + 0.05;
+          }
+          update() {
+            this.y += this.speed;
+            this.angle += this.rotationSpeed;
+          }
+          draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.angle);
+            ctx.fillStyle = this.color;
+            ctx.fillRect(
+              -this.size / 2,
+              -this.size / 2,
+              this.size,
+              this.size * 1.4,
+            );
+            ctx.restore();
+          }
+        }
+
+        for (let i = 0; i < 350; i++) pieces.push(new Piece());
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          pieces.forEach((p) => {
+            p.update();
+            p.draw();
+          });
+          requestAnimationFrame(animate);
+        }
+        animate();
+      }
+
+      // Initial hearts
+      for (let i = 0; i < 30; i++) setTimeout(createHeart, i * 70);
+
+      // Close with Escape
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          document.getElementById("confessionModal").style.display = "none";
+          document.getElementById("finalScreen").style.display = "none";
+        }
+      });
+
+      // Handle resize
+      window.addEventListener("resize", () => {
+        const canvas = document.getElementById("confetti");
+        if (canvas) {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+      });
+    </script>
+  </body>
+</html>
